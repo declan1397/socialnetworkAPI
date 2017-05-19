@@ -59,38 +59,38 @@ Account * createTwitterAccount( const Json::Value & root );
 // Read in a set of accounts from a file and creates the appropriate derived account objects. Each object
 // is stored in the specified vector, so long as it isn't a nullptr. Relies upon the static 
 // {Reddit,Instagram,YouTube,Twitter}Account::validateJSON to determine what account to create.
-void createAccounts( vector<const Account*> & v );
+void createAccounts( std::vector<const Account*> & v );
 
 // Searches the vector for an Account whose id() matches the one passed. Returns the appropriate iterator
 // if successful; otherwise returns v.end().
-vector<const Account*>::iterator findAccount( string id, vector<const Account*> & v );
+vector<const Account*>::iterator findAccount( std::string id, std::vector<const Account*> & v );
 
 // Reads in the id associated with the account to find and output (assumes uniquely specified ids,
 // otherwise uses first one found). If the attempt to read fails, or cannot successfully find the
 // account, prints an error message and does nothing. Returns the pointer to the account, or nullptr.
-Account* findAccount( vector<const Account*> & v );
+Account* findAccount( std::vector<const Account*> & v );
 
 // Read in the ids associated with the add a follower command, and then attempts to 1) add the first 
 // account as a follower of the second account (assumes uniquely specified ids, otherwise uses first
 // one found), and 2) add the second account as a friend of the first account. If one (or both) of the 
 // accounts cannot be found, or the ids are not distinct from each other, prints an error message and 
 // does nothing.
-void addFollower( vector<const Account*> & v );
+void addFollower( std::vector<const Account*> & v );
 
 // Read in the ids associated with the remove a follower command, and then attempts to 1) remove the first 
 // account as a follower of the second account (assumes uniquely specified ids, otherwise uses first
 // one found), and 2) remove the second account as a friend of the first account. If one (or both) of the 
 // accounts cannot be found, or the ids are not distinct from each other, prints an error message and 
 // does nothing.
-void removeFollower( vector<const Account*> & v );
+void removeFollower( std::vector<const Account*> & v );
 
 int main() {
-	vector<const Account*> accounts;
+	std::vector<const Account*> accounts;
 	Account * currentAccount = nullptr;
 
 	for ( ;; ) {
 		char command;
-		string fileName;
+		std::string fileName;
 
 		cerr << " Enter command: ";
 		cin >> command;
@@ -188,7 +188,7 @@ int main() {
 	return 0;
 } // main
 
-void createAccounts( vector<const Account*> & v ) {
+void createAccounts( std::vector<const Account*> & v ) {
 	Json::Value * root = readInJSON();
 	if ( root == nullptr ) return;
 	if ( not root->isObject() ) { delete root; return; }
@@ -213,7 +213,7 @@ void createAccounts( vector<const Account*> & v ) {
 } // createAccounts
 
 Json::Value * readInJSON() {
-	string fileName;
+	std::string fileName;
 	cin >> fileName;
 	if ( cin.fail() ) return nullptr;
 
@@ -226,7 +226,7 @@ Json::Value * readInJSON() {
 	// 'root' contains the root value after parsing. Start with it set to a "null value" object by default.
 	Json::Value * root = new Json::Value; 
 	Json::CharReaderBuilder rbuilder; // Use the builder to create the parser.
-	string errors; // Contains error messages from the parsing.
+	std::string errors; // Contains error messages from the parsing.
 	bool parsedOk = Json::parseFromStream( rbuilder, infile, root, &errors );
 	
 	if ( not parsedOk ) {
@@ -249,7 +249,7 @@ void output( const Account * account ) {
 	output( account->createJSON() );
 } // output
 
-void storeAndOutput( vector<const Account*> & v, const Account * account ) {
+void storeAndOutput( std::vector<const Account*> & v, const Account * account ) {
 	if ( account == nullptr ) {
 		cerr << "Account is a nullptr, not stored." << endl;
 		return;
@@ -262,11 +262,11 @@ Account * createRedditAccount( const Json::Value & root ) {
 	if ( not RedditAccount::validateJSON( root ) ) return nullptr;
 
 	// Create temporary constants since compiler doesn't like passing rvalues as constants.
-	const Date * creationDate = createDateFromJSON( root[ "created" ] );
+	Date * creationDate = createDateFromJSON( root[ "created" ] );
 	Date * expirationDate = createDateFromJSON( root[ "suspension_expiration" ] );
-	const string id = root["id"].asString(); // otherwise complains about passing an rvalue as a constant
-	const string email_address = root[ "email_address" ].asString();
-	const string name = root[ "name" ].asString();
+	const std::string id = root["id"].asString(); // otherwise complains about passing an rvalue as a constant
+	const std::string email_address = root[ "email_address" ].asString();
+	const std::string name = root[ "name" ].asString();
 
 	return new RedditAccount( id, email_address, name,  root[ "is_mod" ].asBool(), root[ "is_employee" ].asBool(), 
 		root[ "over_18" ].asBool(), root[ "has_verified_email" ].asBool(), root[ "is_gold" ].asBool(), 
@@ -278,15 +278,15 @@ Account * createTwitterAccount( const Json::Value & root ) {
 	if ( not TwitterAccount::validateJSON( root ) ) return nullptr;
 
 	// Create temporary constants since compiler doesn't like passing rvalues as constants.
-	const string id = root["id"].asString();
-	const string email_address = root[ "email_address" ].asString();
-	const string name = root[ "name" ].asString();
-	const string screen_name = root[ "screen_name" ].asString();
-	const string location = root[ "location" ].asString();
-	const string description = root[ "description" ].asString();
-	const string url = root[ "url" ].asString();
-	const string language = root[ "lang" ].asString();
-	const string profile_image_url = root[ "profile_image_url" ].asString();
+	const std::string id = root["id"].asString();
+	const std::string email_address = root[ "email_address" ].asString();
+	const std::string name = root[ "name" ].asString();
+	const std::string screen_name = root[ "screen_name" ].asString();
+	const std::string location = root[ "location" ].asString();
+	const std::string description = root[ "description" ].asString();
+	const std::string url = root[ "url" ].asString();
+	const std::string language = root[ "lang" ].asString();
+	const std::string profile_image_url = root[ "profile_image_url" ].asString();
 	Date * createdAt = createDateFromJSON( root[ "created_at" ] );
 
 	return new TwitterAccount( id, email_address, name, screen_name, location,
@@ -298,11 +298,11 @@ Account * createYouTubeAccount( const Json::Value & root ) {
 	if ( not YouTubeAccount::validateJSON( root ) ) return nullptr;
 
 	// Create temporary constants since compiler doesn't like passing rvalues as constants.
-	const string id = root["id"].asString();
-	const string email_address = root[ "email_address" ].asString();
-	const string title = root[ "snippet" ][ "title" ].asString();
-	const string description = root[ "snippet" ][ "description" ].asString();
-	const Date * publishedAt = createDateFromJSON( root[ "snippet" ][ "publishedAt" ] );
+	const std::string id = root["id"].asString();
+	const std::string email_address = root[ "email_address" ].asString();
+	const std::string title = root[ "snippet" ][ "title" ].asString();
+	const std::string description = root[ "snippet" ][ "description" ].asString();
+	Date * publishedAt = createDateFromJSON( root[ "snippet" ][ "publishedAt" ] );
 
 	return new YouTubeAccount( id, email_address, title, description, publishedAt, 
 		root[ "statistics" ][ "viewCount" ].asUInt(), 
@@ -315,13 +315,13 @@ Account * createInstagramAccount( const Json::Value & root ) {
 	if ( not InstagramAccount::validateJSON( root ) ) return nullptr;
 
 	// Create temporary constants since compiler doesn't like passing rvalues as constants.
-	const string id = root["id"].asString();
-	const string email_address = root[ "email_address" ].asString();
-	const string username = root[ "username" ].asString();
-	const string full_name = root[ "full_name" ].asString();
-	const string profile_picture = root[ "profile_picture" ].asString();
-	const string bio = root[ "bio" ].asString();
-	const string website = root[ "website" ].asString();
+	const std::string id = root["id"].asString();
+	const std::string email_address = root[ "email_address" ].asString();
+	const std::string username = root[ "username" ].asString();
+	const std::string full_name = root[ "full_name" ].asString();
+	const std::string profile_picture = root[ "profile_picture" ].asString();
+	const std::string bio = root[ "bio" ].asString();
+	const std::string website = root[ "website" ].asString();
 
 	return new InstagramAccount( id, email_address, username, full_name, profile_picture,
 		bio, website, root[ "counts" ][ "media" ].asUInt()  );;
@@ -359,7 +359,7 @@ Account * readInTwitterAccount() {
 	return account;
 } // readInTwitterAccount
 
-vector<const Account*>::iterator findAccount( string id, vector<const Account*> & v ) {
+vector<const Account*>::iterator findAccount( std::string id, std::vector<const Account*> & v ) {
 	auto it = find_if( v.begin(), v.end(), [ id ]( const Account * account ){ return account->id() == id; } );
 	if ( it == v.end() ) {
 		cerr << "Unable to find Account with id '" << id << "'." << endl;
@@ -368,8 +368,8 @@ vector<const Account*>::iterator findAccount( string id, vector<const Account*> 
 	return it;
 } // findAccount
 
-void addFollower( vector<const Account*> & v ) {
-	string id1, id2;
+void addFollower( std::vector<const Account*> & v ) {
+	std::string id1, id2;
 	cin >> id1 >> id2;
 	if ( cin.fail() ) {
 		cerr << "Failed to read in two ids." << endl;
@@ -389,7 +389,7 @@ void addFollower( vector<const Account*> & v ) {
 } // addFollower
 
 void removeFollower( vector<const Account*> & v ) {
-	string id1, id2;
+	std::string id1, id2;
 	cin >> id1 >> id2;
 	if ( cin.fail() ) {
 		cerr << "Failed to read in two ids." << endl;
@@ -408,8 +408,8 @@ void removeFollower( vector<const Account*> & v ) {
 	const_cast<Account*>( *it1 )->removeFriend( *it2 );
 } // removeFollower
 
-Account * findAccount( vector<const Account*> & v ) {
-	string id;
+Account * findAccount( std::vector<const Account*> & v ) {
+	std::string id;
 	cin >> id;
 	if ( cin.fail() ) {
 		cerr << "Failed to read in an id." << endl;

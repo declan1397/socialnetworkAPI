@@ -5,7 +5,7 @@
 
 // COMPLETE
 Account::Account( const std::string & id2, const std::string & email_address2 ){
-    id = id2;
+    ID = id2;
     email_address = email_address2;
 }
 
@@ -34,17 +34,17 @@ static bool Account::validateJSON( const Json::Value & value ){
 
 // COMPLETE
 std::string Account::id() const {
-    return id;
+    return ID;
 }
 
 // COMPLETE
 unsigned int Account::numFriends() const{
-    return numFriends;
+    return friends.size();
 }
 
 // COMPLETE
 unsigned int Account::numFollowers() const{
-    return numFollowers;
+    return followers.size();
 }
 
 // Add the specified friend/follower to the list of friends/followers.
@@ -96,7 +96,7 @@ bool Account::hasFollower( const std::string & accountID ) const{
     }
 
     for (int i=0; i < followers.size(); i++){
-        if (followers[i]->id == accountID){
+        if (followers[i]->id() == accountID){
             return true;
         }
     }
@@ -123,7 +123,7 @@ bool Account::hasFriend( const std::string & accountID ) const{
     }
     
     for (int i=0; i < friends.size(); i++){
-        if (friends[i]->id == accountID){
+        if (friends[i]->id() == accountID){
             return true;
         }
     }
@@ -133,10 +133,10 @@ bool Account::hasFriend( const std::string & accountID ) const{
 
 // COMPLETE
 bool Account::hasFollowers() const {
-    return followers.size() > 0;
+    return numFollowers() > 0;
 }
 
 // COMPLETE
 bool Account::hasFriends() const {
-    return friends.size() > 0;
+    return numFriends() > 0;
 }

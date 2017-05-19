@@ -19,10 +19,8 @@
 class Account {
   private:
     // *** Fill in any private data and helper methods.
-    std::string id;
+    std::string ID;
     std::string email_address;
-    unsigned int numFriends = 0;
-    unsigned int numFollowers = 0;
     std::vector<Account*> followers;
     std::vector<Account*> friends;
 

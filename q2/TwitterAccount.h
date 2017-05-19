@@ -4,20 +4,19 @@
 #include <vector>
 #include "util.h"
 
-class TwitterAccount : Account {
+class TwitterAccount : public Account {
   private:
 
     // Initialize Keys Vector
-    static const string keyArray[] = {"id", "email_address", "name", "screen_name", "location", "description", "lang", "verified", "url", "profile_image_url", "followers_count", "friends_count", "favourites_count", "statuses_count", "created_at" };
-    vector<string> keys (keyArray, keyArray + sizeof(keyArray) / sizeof(keyArray[0]) );
+    std::vector<std::string> keys;
 
-    string name;
-    string screen_name;
-    string location;
-    string description;
-    string url;
-    string lang;
-    string profile_image_url;
+    std::string name;
+    std::string screen_name;
+    std::string location;
+    std::string description;
+    std::string url;
+    std::string lang;
+    std::string profile_image_url;
     Date * created_at;
     unsigned int favourites_count;
     unsigned int statuses_count;
@@ -25,17 +24,18 @@ class TwitterAccount : Account {
 
   public:
 
-    TwitterAccount(string id2, string email_address2, string name2, string screen_name2, string location2,
-		string description2, string url2, string language2, string profile_image_url2, Date * createdAt2, unsigned int favourites_count2,
+    TwitterAccount(std::string id2, std::string email_address2, std::string name2, std::string screen_name2, std::string location2,
+		std::string description2, std::string url2, std::string language2, std::string profile_image_url2, Date * createdAt2, unsigned int favourites_count2,
 		unsigned int statuses_count2, bool verified2);
     
-    virtual ~TwitterAccount();
+    //virtual ~TwitterAccount();
 
-    /* SKIPPED
+
 
     // Each type of account has a way to return its JSON representation for output.
     virtual Json::Value * createJSON() const override;
-
+    
+    /* SKIPPED
     // Is this account currently suspended? Check expiration date (if applicable) to system date.
     virtual bool suspended() const override;
 

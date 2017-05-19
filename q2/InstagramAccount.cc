@@ -10,4 +10,13 @@ string bio2, string website2, unsigned int counts2){
     bio = bio2;
     website = website2;
     counts = counts2;
+
+    // Populate Keys Vector
+    std::string keyArray[] = {"id", "email_address", "username", "full_name", "bio", "profile_picture", "website", "counts", "followed_by", "follows"};
+    for (int i=0; i < keyArray.length(); i++){
+        keys.push_back(keyArray[i]);
+    }
+}
+virtual Json::Value * createJSON() const {
+    
 }

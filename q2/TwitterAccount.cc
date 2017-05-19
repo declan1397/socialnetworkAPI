@@ -16,4 +16,13 @@ unsigned int statuses_count2, bool verified2){
     favourites_count = favourites_count2;
     statuses_count = statuses_count2;
     verified = verified2;
+
+    // Populate Keys Vector
+    std::string keyArray[] = {"id", "email_address", "name", "screen_name", "location", "description", "lang", "verified", "url", "profile_image_url", "followers_count", "friends_count", "favourites_count", "statuses_count", "created_at" };
+    for (int i=0; i < keyArray.length(); i++){
+        keys.push_back(keyArray[i]);
+    }
+}
+virtual Json::Value * createJSON() const {
+    
 }

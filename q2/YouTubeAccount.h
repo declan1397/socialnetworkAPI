@@ -4,14 +4,12 @@
 #include <vector>
 #include "util.h"
 
-class YouTubeAccount : Account {
+class YouTubeAccount : public Account {
   private:
     // Initialize Keys Vector
-    static const string keyArray[] = {"id", "email_address", "title", "description", "viewCount", "commentCount", "subscriberCount", "videoCount", "publishedAt"};
-    vector<string> keys (keyArray, keyArray + sizeof(keyArray) / sizeof(keyArray[0]) );
-  
-    string title;
-    string description;
+    std::vector<std::string> keys;
+    std::string title;
+    std::string description;
     unsigned int viewCount;
     unsigned int commentCount;
     unsigned int subscriberCount;
@@ -19,14 +17,17 @@ class YouTubeAccount : Account {
     Date * publishedAt;
 
   public:
-    YouTubeAccount(string id2, string email_address2, string title2, string description2, Date * publishedAt2, unsigned int viewCount2, unsigned int commentCount2, unsigned int subscriberCount2, unsigned int videoCount2);
+  
+    YouTubeAccount(std::string id2, std::string email_address2, std::string title2, std::string description2, Date * publishedAt2, unsigned int viewCount2, unsigned int commentCount2, unsigned int subscriberCount2, unsigned int videoCount2);
 
-    virtual ~YouTubeAccount();
-    /* SKIPPED
+    //virtual ~YouTubeAccount();
+
+
 
     // Each type of account has a way to return its JSON representation for output.
-    virtual Json::Value * createJSON() const override;
-
+    virtual Json::Value * createJSON() const;
+    
+    /* SKIPPED
     // Is this account currently suspended? Check expiration date (if applicable) to system date.
     virtual bool suspended() const override;
 

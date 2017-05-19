@@ -18,4 +18,15 @@ unsigned int inbox_count2, Date * expirationDate2, Date * creationDate2){
     inbox_count = inbox_count2;
     expirationDate = expirationDate2;
     creationDate = creationDate2;
+
+    // Populate keys
+    std::string keyArray[] = {"id", "email_address", "name", "is_mod", "is_employee", "over_18", "has_verified_email", "is_gold", "gold_creddits", "link_karma", "comment_karma", "inbox_count", "suspension_expiration", "created"};
+
+    for (int i=0; i < keyArray.length(); i++){
+        keys.push_back(keyArray[i]);
+    }
+}
+
+virtual Json::Value * createJSON() const {
+    
 }

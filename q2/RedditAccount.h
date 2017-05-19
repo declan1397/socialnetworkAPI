@@ -4,16 +4,14 @@
 #include <vector>
 #include "util.h"
 
-class RedditAccount : Account {
+class RedditAccount : public Account {
   private:
 
     // Initialize Keys Vector
-    static const string keyArray[] = {"id", "email_address", "name", "is_mod", "is_employee", "over_18", "has_verified_email", "is_gold", "gold_creddits", "link_karma", "comment_karma", "inbox_count", "suspension_expiration", "created"};
-    vector<string> keys (keyArray, keyArray + sizeof(keyArray) / sizeof(keyArray[0]) );
-
+    std::vector<std::string> keys;
     Date * creationDate;
     Date * expirationDate;
-    string name;
+    std::string name;
     bool is_mod;
     bool is_employee;
     bool over_18;
@@ -26,18 +24,18 @@ class RedditAccount : Account {
     
   public:
 
-    RedditAccount(string id2, string email_address2, string name2, bool is_mod2, bool is_employee2, 
+    RedditAccount(std::string id2, std::string email_address2, std::string name2, bool is_mod2, bool is_employee2, 
 		bool over_18_2, bool has_verified_email2, bool is_gold2, 
 		unsigned int gold_creddits2, unsigned int link_karma2, unsigned int comment_karma2,
 		unsigned int inbox_count2, Date * expirationDate2, Date * creationDate2);
     
-    virtual ~RedditAccount();
+    //virtual ~RedditAccount();
 
-    /* SKIPPED
+
 
     // Each type of account has a way to return its JSON representation for output.
     virtual Json::Value * createJSON() const override;
-
+    /* SKIPPED
     // Is this account currently suspended? Check expiration date (if applicable) to system date.
     virtual bool suspended() const override;
 

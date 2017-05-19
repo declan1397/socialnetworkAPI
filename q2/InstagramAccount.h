@@ -4,30 +4,30 @@
 #include <vector>
 #include "util.h"
 
-class InstagramAccount : Account {
+class InstagramAccount : public Account {
   private:
 
     // Initialize Keys Vector
-    static const string keyArray[] = {"id", "email_address", "username", "full_name", "bio", "profile_picture", "website", "counts", "followed_by", "follows"};
-    vector<string> keys (keyArray, keyArray + sizeof(keyArray) / sizeof(keyArray[0]) );
+    std::vector<std::string> keys;
 
-    string username;
-    string full_name;
-    string profile_picture;
-    string bio;
-    string website;
+    std::string username;
+    std::string full_name;
+    std::string profile_picture;
+    std::string bio;
+    std::string website;
     unsigned int counts;
 
   public:
-    InstagramAccount(string id, string email_address, string username, string full_name, string profile_picture,
-		string bio, string website, unsigned int counts);
+    InstagramAccount(std::string id, std::string email_address, std::string username, std::string full_name, std::string profile_picture,
+		std::string bio, std::string website, unsigned int counts);
     
-    virtual ~InstagramAccount();
-    /* SKIPPED
+    //virtual ~InstagramAccount();
+
 
     // Each type of account has a way to return its JSON representation for output.
     virtual Json::Value * createJSON() const override;
-
+    
+    /* SKIPPED
     // Is this account currently suspended? Check expiration date (if applicable) to system date.
     virtual bool suspended() const override;
 
